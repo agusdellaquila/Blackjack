@@ -26,21 +26,23 @@
 
         <div class="table">
             <div class="houseSide">
-                <h2 class="mainFontColor centered">house</h2>
-                <div id="houseCards">
+                <h2 class="mainFontColor centered">HOUSE</h2>
+                <div id="houseTable" class="centered">
 
                 </div>
             </div>
             <hr class="ms3 me3">
             <div class="playerSide">
-                <h2 class="mainFontColor centered">Player 1</h2>
+                <h2 class="mainFontColor centered">PLAYER 1</h2>
                 <p id="playerTexts" class="mainFontColor"></p>
-                <div id="playerCards">
+                <div id="playerTable" class="centered">
 
                 </div>
-                <button class="btn btnPrimary" onclick="addCart()">+1 card</button>
-                <button class="btn btnPrimary" onclick="stay()">stay</button>
-                <button class="btn btnPrimary" onclick="doubleBet()">double</button>
+                <div class="centered">
+                    <button class="btn btnPrimary me3" onclick="addCard(player, house)">+1 card</button>
+                    <button class="btn btnPrimary ms3 me3" onclick="stay()">stay</button>
+                    <button class="btn btnPrimary me3" onclick="doubleBet()">double</button>
+                </div>
             </div>
         </div>
     </main>
@@ -50,5 +52,7 @@
     <script src="/js/index.js"></script>
     <!--toastify js-->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <!-- swal -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

@@ -15,8 +15,8 @@ class Player {
         }
     }
 
-    handTotal = (playerCards) => {
-        this.total = playerCards.reduce((total, currentValue) => total + currentValue, 0);
+    handTotal = () => {
+        this.total = this.hand.reduce((total, currentValue) => total + currentValue.value, 0);
     }
 
     bankrupt = () => {
@@ -41,8 +41,8 @@ class House {
         //else house bankrupt
     }
 
-    handTotal = (houseCards) => {
-        this.total = houseCards.reduce((total, currentValue) => total + currentValue, 0);
+    handTotal = () => {
+        this.total = this.hand.reduce((total, currentValue) => total + currentValue.value, 0);
     }
 
     bankrupt = () => {
@@ -70,21 +70,68 @@ const randomizer = (allCards) => {
     const min = 1; //inclusive
     const max = 12; //exclusive
     randomNumber = Math.floor(Math.random() * (max - min) + min) 
-    return allCards[randomNumber]
+    console.log(randomNumber)
+    return allCards[randomNumber + 1]
+};
+const clear = () => {
+    document.getElementById('playerTable').innerHTML = '';
+    document.getElementById('houseTable').innerHTML = '';
 }
-const showCards = (obj) => {
-    let playerTable = document.getElementById('playerCards');
-    
+const showCards = (obj, side) => {
+    let sideTable;
+    if (side == 'h') {
+        sideTable = document.getElementById('houseTable');
+    } else {
+        sideTable = document.getElementById('playerTable');
+    }
+
     let contenedor = document.createElement("div");
 
-    console.log(obj.hand)
-
     obj.hand.forEach(card => {
-        console.log(card)
-        contenedor.innerHTML += `<img src="${card.img}" alt="card" class="ps2 pe2"></img>`
+        contenedor.innerHTML += `<img src="${card.img}" alt="card" class="p2">`
     });
-    playerTable.appendChild(contenedor);
+
+    sideTable.appendChild(contenedor);
+};
+const showAllCards = () => {
+    clear();
+    showCards(player, 'p');
+    showCards(house, 'h');
+};
+const addCard = (objP, objH) => {
+    objP.hand.push(randomizer(allCards))
+    
+    checkCardsTotal(objP, objH) ? game() : gameover(objP, objH);
+};
+const checkCardsTotal = (objP, objH) => {
+    totals(objP, objH);
+
+    let ret = true;
+
+    if ((objP.total >= 21) || (objH.total >= 21)) {
+        ret = false;
+    }
+
+    return ret
 }
+const totals = (objP, objH) => {
+    objP.handTotal();
+    objH.handTotal();
+}
+const gameover = (objP, objH) => {
+    if ((objP.total > objH.total) && (objP.total <= 21)) { //EMPATE????
+        playerwins();
+    } else {
+        playerlose();
+    }
+}
+const playerwins = () => {
+    document.getElementById('playerTable').innerHTML = `<h2 class="winText">YOU WIN</h2>`;
+}
+const playerlose = () => {
+    document.getElementById('playerTable').innerHTML = `<h2 class="lostText">YOU LOST</h2>`;
+}
+
 //--------------------------------------------
 //inicializacion
 let name; //dom
@@ -100,9 +147,10 @@ let house = new House(houseHand, total, money, bet);
 // previos al game, checkear bets y demas
 
 const game = () => {
-    showCards(player, house);
+    showAllCards();
 }
 
 game();
+
 
 
