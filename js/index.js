@@ -1,4 +1,4 @@
-//objects
+//definition
 class Player {
     constructor(name, hand, total, money, bet) {
         this.name = name;
@@ -52,7 +52,7 @@ class House {
     }
 }
 let allCards = [
-    {value: 1, img: '/img/cards/A.png'},
+    {value: 1, img: '/img/cards/A.png'}, //pos0
     {value: 2, img: '/img/cards/2.png'},
     {value: 3, img: '/img/cards/3.png'},
     {value: 4, img: '/img/cards/4.png'},
@@ -62,20 +62,95 @@ let allCards = [
     {value: 8, img: '/img/cards/8.png'},
     {value: 9, img: '/img/cards/9.png'},
     {value: 10, img: '/img/cards/10.png'},
-    {value: 11, img: '/img/cards/11.png'},
+    {value: 11, img: '/img/cards/11.png'}, //pos 10
 ];
+let gameStatus;
+let players = [];
+let gBet = 0;
+
 //functions
+const initialize = () => {
+    //inicializacion
+    let name; //dom
+    let playerHand = [randomizer(allCards), randomizer(allCards)]; //inic en 2
+    let houseHand = [randomizer(allCards), randomizer(allCards)]; //inic en 2
+    let total = 0;
+    let money = importMoney();
+    
+    //---------------------
+    let player = new Player('name', playerHand, total, money, gBet);
+    let house = new House(houseHand, total, money, gBet);
+    
+    players = [player, house]
+
+    showBetDB(players);
+}
+const newCards = (arrayPlayers) => {
+    arrayPlayers[0].hand = [randomizer(allCards), randomizer(allCards)]; //inic en 2
+    arrayPlayers[1].hand = [randomizer(allCards), randomizer(allCards)]; //inic en 2
+    console.log(arrayPlayers[0])
+}
+const start = (arrayPlayers) => {
+    changeDisplayToPlay();
+    gameStatus = true;
+    newCards(arrayPlayers);
+    totals(arrayPlayers)
+    hideHouse(arrayPlayers); //lama a showall MAL
+    showBetDP(arrayPlayers);
+}
+const showBetDB = (arrayPlayers) => {
+    document.getElementById('pBetDB').innerHTML = "Bet: " + arrayPlayers[0].bet
+    document.getElementById('pMoneyDB').innerHTML = "Money:  " + arrayPlayers[0].money 
+}
+const showBetDP = (arrayPlayers) => {
+    document.getElementById('pBetDP').innerHTML = "Bet: " + arrayPlayers[0].bet
+    document.getElementById('pMoneyDP').innerHTML = "Money:  " + arrayPlayers[0].money 
+}
+const keepPlaying = (arrayPlayers) => {
+    gameStatus = true;
+    hideHouse(arrayPlayers);
+}
+const playAgain = () => { //WHEN PLAY AGAIN, MONEY RESTARTS TO 10000, SAVE ON LS?
+    clearTable();
+    clearText();
+    changeDisplayToBet();
+}
+const bet = (arrayPlayers, betValue) => {
+    gBet += betValue;
+    arrayPlayers[0].stakes(betValue);
+    let newMoneyTotal = moneyTotal(arrayPlayers, betValue);
+    setMoney(newMoneyTotal);
+    showBetDB(arrayPlayers);
+}
+const moneyTotal = (arrayPlayers, betValue) => {
+    arrayPlayers[0].money -= betValue;
+    return arrayPlayers[0].money
+}
+const importMoney = () => {
+    let money = JSON.parse(localStorage.getItem('money')) || setMoney(10000);
+    return money
+}
+const setMoney = (newMoneyTotal) => {
+    let money = newMoneyTotal;
+    money = JSON.stringify(money)
+    localStorage.setItem('money', money);
+}
+
+
+
 const randomizer = (allCards) => {
     let randomNumber;
-    const min = 1; //inclusive
-    const max = 12; //exclusive
+    const min = 0; //inclusive
+    const max = 11; //exclusive
     randomNumber = Math.floor(Math.random() * (max - min) + min) 
-    console.log(randomNumber)
-    return allCards[randomNumber + 1]
+    return allCards[randomNumber]
 };
-const clear = () => {
+const clearTable = () => {
     document.getElementById('playerTable').innerHTML = '';
     document.getElementById('houseTable').innerHTML = '';
+}
+const clearText = () => {
+    document.getElementById('playerTexts').innerText = '';
 }
 const showCards = (obj, side) => {
     let sideTable;
@@ -88,69 +163,103 @@ const showCards = (obj, side) => {
     let contenedor = document.createElement("div");
 
     obj.hand.forEach(card => {
-        contenedor.innerHTML += `<img src="${card.img}" alt="card" class="p2">`
+        contenedor.innerHTML += `<img class="${side}" src="${card.img}" alt="card" class="p2">`
     });
 
     sideTable.appendChild(contenedor);
 };
-const showAllCards = () => {
-    clear();
-    showCards(player, 'p');
-    showCards(house, 'h');
+const hideHouse = (arrayPlayers) => {
+    showAllCards(arrayPlayers);
+
+    let arrayHouseCards = document.getElementsByClassName('h');
+    arrayHouseCards[0].src = "/img/cards/cardBack.png";
+}
+const changeDisplayToPlay = () => {
+    document.getElementById('hideChips').style.display = 'none';
+    document.getElementById('hidePlayingTable').style.display = 'block';
+}
+const changeDisplayToBet = () => {
+    document.getElementById('hideChips').style.display = 'flex';
+    document.getElementById('hidePlayingTable').style.display = 'none';
+}
+const showAllCards = (arrayPlayers) => {
+    clearTable();
+    showCards(arrayPlayers[0], 'p');
+    showCards(arrayPlayers[1], 'h');
+    document.getElementById('pTotal').innerHTML = "Total: " + arrayPlayers[0].total //mod?
+    document.getElementById('pBetDP').innerHTML = "Bet: " + arrayPlayers[0].bet
+    document.getElementById('pMoneyDP').innerHTML = "Money:  " + arrayPlayers[0].money 
 };
-const addCard = (objP, objH) => {
-    objP.hand.push(randomizer(allCards))
-    
-    checkCardsTotal(objP, objH) ? game() : gameover(objP, objH);
+
+
+// BTNS
+const addCard = (arrayPlayers) => {
+    if (gameStatus) {
+        arrayPlayers[0].hand.push(randomizer(allCards))
+        
+        checkCardsTotal(arrayPlayers) ? keepPlaying(arrayPlayers) : gameover(arrayPlayers);        
+    }
 };
-const checkCardsTotal = (objP, objH) => {
-    totals(objP, objH);
+const stay = (arrayPlayers) => { 
+    if (gameStatus) {
+        gameover(arrayPlayers);       
+    }
+};
+const double = (arrayPlayers) => { 
+    if (gameStatus) {
+        
+    }
+};
+
+//double te tenes q plantar si o si desp
+
+
+//
+const checkCardsTotal = (arrayPlayers) => {
+    totals(arrayPlayers);
 
     let ret = true;
 
-    if ((objP.total >= 21) || (objH.total >= 21)) {
+    if ((arrayPlayers[0].total >= 21) || (arrayPlayers[1].total >= 21)) {
         ret = false;
     }
 
     return ret
 }
-const totals = (objP, objH) => {
-    objP.handTotal();
-    objH.handTotal();
+const totals = (arrayPlayers) => {
+    arrayPlayers[0].handTotal();
+    arrayPlayers[1].handTotal();
 }
-const gameover = (objP, objH) => {
-    if ((objP.total > objH.total) && (objP.total <= 21)) { //EMPATE????
-        playerwins();
+
+
+//
+const gameover = (arrayPlayers) => {
+    gBet = 0;
+    gameStatus = false;
+    totals(arrayPlayers);
+    if ((arrayPlayers[0].total > arrayPlayers[1].total) && (arrayPlayers[0].total <= 21)) { //EMPATE????
+        playerwins(arrayPlayers);
     } else {
-        playerlose();
+        playerlose(arrayPlayers);
     }
+    showAllCards(arrayPlayers); //revela la de house
 }
-const playerwins = () => {
-    document.getElementById('playerTable').innerHTML = `<h2 class="winText">YOU WIN</h2>`;
+const playerwins = (arrayPlayers) => {
+    let winText = document.getElementById('playerTexts');
+    winText.innerHTML = "YOU WON!";
+    winText.style.color = "#cae500"
+    winText.style.fontWeight = "bold"
+    winText.style.fontSize = "36px"
+
+    arrayPlayers[0].money += Math.floor((arrayPlayers[0].bet * 1.25));
+    setMoney(arrayPlayers[0].money);
 }
 const playerlose = () => {
-    document.getElementById('playerTable').innerHTML = `<h2 class="lostText">YOU LOST</h2>`;
+    let loseText = document.getElementById('playerTexts');
+    loseText.innerHTML = "YOU LOST :(";
+    loseText.style.color = "#dc3545"
+    loseText.style.fontWeight = "bold"
+    loseText.style.fontSize = "36px"
 }
 
-//--------------------------------------------
-//inicializacion
-let name; //dom
-let playerHand = [randomizer(allCards), randomizer(allCards)]; //inic en 2
-let houseHand = [randomizer(allCards), randomizer(allCards)]; //inic en 2
-let total = 0;
-let money = 10000; //maybe dom
-let bet = 0; 
-//---------------------
-let player = new Player('name', playerHand, total, money, bet);
-let house = new House(houseHand, total, money, bet);
-
-// previos al game, checkear bets y demas
-
-const game = () => {
-    showAllCards();
-}
-
-game();
-
-
-
+initialize();

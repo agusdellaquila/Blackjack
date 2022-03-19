@@ -127,7 +127,7 @@
     background-color: #ffffff;
 }
 .btnPrimary:hover {
-    color: #db6d5a;
+    color: #8BAC92;
 }
 /* _______________________margins */
 /* ______________margin start*/
@@ -312,16 +312,88 @@
     padding-left: 3rem;
 }
 /*  _____________start_________________ */
+* {
+    margin: 0;
+    padding: 0;
+}
 html {
-    background-color: #616161;
+    background-color: #8BAC92;
     font-family: 'poppins', sans-serif;
 }
+.tableOutBorder {
+    background-color: #231F20;
+    padding: 1rem 0.5rem;
+    border-radius: 10px 10px 60px 60px;
+}
+.tableInnerBorder {
+    background-color: #d8cfa5;
+    padding: 0.25rem;
+    border-radius: 10px 10px 60px 60px;
+}
 .table {
-    background-color: rgb(61, 36, 36);
+    background-color: #236331;
+    border-radius: 10px 10px 60px 60px;
 }
-.winText {
-    color: #cae500;
+.dividerLine {
+    height: 3px;
+    background-color: #d8cfa5;
+    margin: 0 4rem;
 }
-.lostText {
-    color: #dc3545;
+
+audio {
+    width: 100px;
+}
+audio::-webkit-media-controls-current-time-display {
+    display: none;
+}
+audio::-webkit-media-controls-time-remaining-display {
+    display: none;
+}
+audio::-webkit-media-controls-timeline {
+    display: none;
+}
+audio::-webkit-media-controls-volume-slider-container {
+    display: none;
+}
+audio::-webkit-media-controls-volume-slider-container {
+    display: none;
+}
+audio::-webkit-media-controls-volume-slider {
+    display: none;
+}
+.hudGrid {
+    display: grid; 
+    grid-template-columns: 1fr 3fr 1fr; 
+    grid-template-rows: 1fr; 
+    gap: 0px 0px; 
+    grid-template-areas: 
+    "areaInfo areaName areaTotal"; 
+    margin: 1rem 0;
+}
+.playerInfo {
+    grid-area: areaInfo;
+}
+.playerName {
+    grid-area: areaName;
+}
+.playerTotal {
+    grid-area: areaTotal;
+}
+.infoItem {
+    background-color: #ffffff;
+    border-radius: 6px;
+    width: max-content;
+    align-content: center;
+}
+.chips {
+    cursor: pointer;
+    /* width responsive */
+    width: 150px;
+    transition: transform 0.6s ease-in;
+}
+.chips:hover {
+    transform: rotate(45deg);
+}
+.playingTable {
+    display: none;
 }

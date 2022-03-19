@@ -20,31 +20,86 @@
     <header></header>
 
     <main>
-        <h1>minimaljack</h1>
+        <h1 class="centered">minimaljack</h1>
 
-        <div class="btn btnPrimary">start</div>
+        <audio controls loop>
+            <source src="/audio/minimaljackSountrack_byPiova.mpeg">
+            Your browser does not support the audio tag.
+        </audio>
 
-        <div class="table">
-            <div class="houseSide">
-                <h2 class="mainFontColor centered">HOUSE</h2>
-                <div id="houseTable" class="centered">
+        <div class="tableOutBorder">
+            <div class="tableInnerBorder">
+                <div class="table">
+                    <div id="hideChips" class="showChips dFlexCol">
+                        <div class="dFlex centered pt4 pb4">
+                            <img class="chips me2" src="/img/chips/ficha1.png" alt="" onclick="bet(players, 1)">
+                            <img class="chips ms2 me2" src="/img/chips/ficha10.png" alt="" onclick="bet(players, 10)">
+                            <img class="chips ms2 me2" src="/img/chips/ficha50.png" alt="" onclick="bet(players, 50)">
+                            <img class="chips ms2 me2" src="/img/chips/ficha100.png" alt="" onclick="bet(players, 100)">
+                            <img class="chips ms2 me2" src="/img/chips/ficha200.png" alt="" onclick="bet(players, 200)">
+                            <img class="chips ms2 me2" src="/img/chips/ficha500.png" alt="" onclick="bet(players, 500)">
+                            <img class="chips ms2" src="/img/chips/ficha1000.png" alt="" onclick="bet(players, 1000)">
+                        </div>
+                        <div class="dFlexCol centered mt4 mb4">
+                            <p id="pMoneyDB" class="infoItem centered fwBold ps2 pe2 mb1"></p>
+                            <p id="pBetDB" class="infoItem centered fwBold ps2 pe2 mt1 mb3"></p>
+                            <button class="btn btnPrimary ps5 pe5" onclick="start(players)">bet</button>
+                        </div>
 
-                </div>
-            </div>
-            <hr class="ms3 me3">
-            <div class="playerSide">
-                <h2 class="mainFontColor centered">PLAYER 1</h2>
-                <p id="playerTexts" class="mainFontColor"></p>
-                <div id="playerTable" class="centered">
+                    </div>
 
-                </div>
-                <div class="centered">
-                    <button class="btn btnPrimary me3" onclick="addCard(player, house)">+1 card</button>
-                    <button class="btn btnPrimary ms3 me3" onclick="stay()">stay</button>
-                    <button class="btn btnPrimary me3" onclick="doubleBet()">double</button>
+                    <div id="hidePlayingTable" class="playingTable">
+                        <div class="houseSide">
+                            <h2 class="mainFontColor centered pt3">HOUSE</h2>
+                            <div id="houseTable" class="centered">
+            
+                            </div>
+                        </div>
+    
+                        <div class="dividerLine"></div>
+    
+                        <!-- <img src="/img/decoration/cigars.png" class="ms3" width="70px" alt="cigars_deco">
+                        <img src="/img/decoration/whiskey.png" class="me3" width="150px" alt="whiskey_deco"> -->
+    
+                        <div class="playerSide">
+                            <div class="hudGrid">
+                                <div class="playerInfo dFlexCol centered">
+                                    <p id="pMoneyDP" class="infoItem centered fwBold ps2 pe2 mb1"></p>
+                                    <p id="pBetDP" class="infoItem centered fwBold ps2 pe2 mt1"></p>
+                                </div>
+                                <h2 class="playerName dFlex mainFontColor centered">PLAYER 1</h2>
+                                <div class="playerTotal dFlex centered">
+                                    <p id="pTotal" class="infoItem fwBold ps2 pe2"></p>
+                                </div>
+                            </div>
+                            
+                            <p id="playerTexts" class="mainFontColor centered"></p>
+    
+                            <div id="playerTable" class="centered"></div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
+
+        <section class="centered mt3">
+            <button class="btn btnPrimary me3" onclick="addCard(players)">+1 card</button>
+            <button class="btn btnPrimary ms3 me3" onclick="stay(players)">stay</button>
+            <button class="btn btnPrimary ms3" onclick="doubleBet()">double</button>
+        </section>
+        <button class="btn btnPrimary ms3" onclick="playAgain()">Play again</button>
+
+        <p>To do list:
+            racha en ls con max racha
+            Money-bet
+            double
+            btn start
+            hacer q la maquina apueste
+            Hacer q playagain y bet solo hagan cambio de display
+
+            ACTUALIZAR/RESETEOS DE MONEY EN dp db
+        </p>
     </main>
 
     <footer></footer>
