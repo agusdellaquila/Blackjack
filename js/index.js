@@ -1,104 +1,106 @@
+//objects
+class Player {
+    constructor(name, hand, total, money, bet) {
+        this.name = name;
+        this.hand = hand;
+        this.total = total;
+        this.money = money;
+        this.bet = bet;
+    }
+    stakes = (betValue) => {
+        if (betValue <= this.money) {
+            this.bet += betValue;
+        } else {
+            console.log('no enough money for that bet')
+        }
+    }
+
+    handTotal = (playerCards) => {
+        this.total = playerCards.reduce((total, currentValue) => total + currentValue, 0);
+    }
+
+    bankrupt = () => {
+        if (this.money == 0) {
+            console.log('game over')
+        }
+    }
+}
+class House {
+    constructor(hand, total, money, bet) {
+        this.hand = hand;
+        this.total = total;
+        this.money = money;
+        this.bet = bet;
+    }
+    stakes = () => {
+        let min, max;
+        min = 1;
+        max = (this.money + 1);
+        betValue = Math.floor(Math.random() * (max - min) + min)
+        if (betValue > 0) this.bet += betValue;
+        //else house bankrupt
+    }
+
+    handTotal = (houseCards) => {
+        this.total = houseCards.reduce((total, currentValue) => total + currentValue, 0);
+    }
+
+    bankrupt = () => {
+        if (this.money == 0) {
+            console.log('house over')
+        }
+    }
+}
+let allCards = [
+    {value: 1, img: '/img/cards/A.png'},
+    {value: 2, img: '/img/cards/2.png'},
+    {value: 3, img: '/img/cards/3.png'},
+    {value: 4, img: '/img/cards/4.png'},
+    {value: 5, img: '/img/cards/5.png'},
+    {value: 6, img: '/img/cards/6.png'},
+    {value: 7, img: '/img/cards/7.png'},
+    {value: 8, img: '/img/cards/8.png'},
+    {value: 9, img: '/img/cards/9.png'},
+    {value: 10, img: '/img/cards/10.png'},
+    {value: 11, img: '/img/cards/11.png'},
+];
 //functions
-const randomizer = () => {
+const randomizer = (allCards) => {
     let randomNumber;
     const min = 1; //inclusive
     const max = 12; //exclusive
-    return randomNumber = Math.floor(Math.random() * (max - min) + min) 
+    randomNumber = Math.floor(Math.random() * (max - min) + min) 
+    return allCards[randomNumber]
 }
+const showCards = (obj) => {
+    let playerTable = document.getElementById('playerCards');
+    
+    let contenedor = document.createElement("div");
 
-const stakes = () => {
-    let stakeMsj = document.getElementById('playerTexts');
-    stakeMsj.innerHTML = 'How much do you wish to stake?'
-} 
+    console.log(obj.hand)
 
-const cardsTotal = (playerArray) => {
-    let total = 0;
-    // total = cardArray.reduce((previousValue, currentValue) => {previousValue + currentValue});
-    playerArray.forEach(item => {
-        total += item
+    obj.hand.forEach(card => {
+        console.log(card)
+        contenedor.innerHTML += `<img src="${card.img}" alt="card" class="ps2 pe2"></img>`
     });
-    return total
+    playerTable.appendChild(contenedor);
 }
+//--------------------------------------------
+//inicializacion
+let name; //dom
+let playerHand = [randomizer(allCards), randomizer(allCards)]; //inic en 2
+let houseHand = [randomizer(allCards), randomizer(allCards)]; //inic en 2
+let total = 0;
+let money = 10000; //maybe dom
+let bet = 0; 
+//---------------------
+let player = new Player('name', playerHand, total, money, bet);
+let house = new House(houseHand, total, money, bet);
 
-const showCardsTotal = (total) => {
-    let cardsTotal = document.getElementById('playerTexts');
-    cardsTotal.innerHTML = 'Your cards total is ' + total;
-}
-
-const blackjack = () => {
-    let winner = document.getElementById('playerTexts');
-    winner.innerHTML = 'BLACKJACK! you win: '//bet;
-}
-
-const playerWin = () => {
-    let winner = document.getElementById('playerTexts');
-    winner.innerHTML = 'you win: '//bet;
-}
-
-const playerLoose = () => {
-    let looser = document.getElementById('playerTexts');
-    looser.innerHTML = 'you lost :( '//bet;
-}
-
-const checkBlackjack = (total) => {
-    if (total == 21) {
-        blackjack();
-    }
-}
-
-const addCard = (playerArray) => {
-    playerArray.push(randomizer())
-}
-
-const checkWinner = (playerArray, houseArray) => {
-    let playerTotal;
-    let houseTotal;
-
-    playerTotal = cardsTotal(playerArray);
-    houseTotal = cardsTotal(houseArray);
-
-    if (playerTotal >= houseTotal) {
-        playerWin();
-    } else {
-        playerLoose();
-    }
-}
+// previos al game, checkear bets y demas
 
 const game = () => {
-    //starts with 10.000 coins to stake
-    
-    //stakes(); //async; asks for bet needs to check if there is enough money for the bet.
-    //manage total $
-    //after it resolves it calls clear()
-
-    //creates each array with 2 starting cards, at random
-    let playerCards = [randomizer(),randomizer()];
-    let houseCards = [randomizer(),randomizer()];
-
-    let total = 0;
-    total = cardsTotal(playerCards);
-    checkBlackjack(total);
-    showCardsTotal(total); //repeated l84
-
-    //separete func?
-    // while (total <= 21) {
-        showCardsTotal(total);
-        //if blackjack, then end
-
-        //else
-        //waits for btn event od +1card or stay
-        //if +1card
-        addCard(playerCards);
-        addCard(houseCards);
-    
-        //if stay
-        checkWinner(playerCards, houseCards);
-    
-        console.log(playerCards)
-    // }
-
-
-
+    showCards(player, house);
 }
 
 game();

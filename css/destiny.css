@@ -16,7 +16,7 @@
     color: #ffffff;
 }
 .secondaryFontColor {
-    color: #9b5050;
+    color: #9c9c9c;
 }
 .accentFontColor {
     color: #6276cc;
@@ -105,7 +105,7 @@
     display: inline-block;
     font-weight: 400;
     line-height: 1.5;
-    color: #9b5050;
+    color: #ffffff;
     text-align: center;
     text-decoration: none;
     vertical-align: middle;
@@ -122,11 +122,11 @@
 }
 .btnPrimary {
     font-weight: bold;
-    color: #9b5050;
-    background-color: #93ad75;
+    color: #ffffff;
+    background-color: #000000;
 }
 .btnPrimary:hover {
-    color: #6276cc;
+    color: #db6d5a;
 }
 /* _______________________margins */
 /* ______________margin start*/
@@ -311,6 +311,9 @@
     padding-left: 3rem;
 }
 /*  _____________start_________________ */
+html {
+    background-color: #616161;
+}
 
 .table {
     background-color: rgb(61, 36, 36);
