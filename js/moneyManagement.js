@@ -17,4 +17,4 @@ const setMoney = (newMoneyTotal) => {
     localStorage.setItem('money', money);
 }
 
-export {moneyTotal, importMoney, setMoney}
+export { moneyTotal, importMoney, setMoney }

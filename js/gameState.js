@@ -3,10 +3,6 @@ import '../js/cards.js'
 import '../js/gameState.js'
 import '../js/moneyManagement.js'
 
-
-
-
-
 //
 const start = (arrayPlayers) => {
     changeDisplayToPlay();
@@ -59,4 +55,4 @@ const playerlose = () => {
     setMoney(arrayPlayers[0].money);
 }
 
-export {initialize, start, keepPlaying, playAgain, gameover, playerwins, playerlose}
+export {start, keepPlaying, playAgain, gameover, playerwins, playerlose}

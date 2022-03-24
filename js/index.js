@@ -1,9 +1,6 @@
-import '../js/gameState.js'
-import '../js/cards.js'
-import '../js/gameButtons.js'
-import bet from '../js/bet.js'
-import '../js/moneyManagement.js'
-import '../js/showOnScreen.js'
+import {randomizer} from '../js/cards.js'
+import {importMoney} from '../js/moneyManagement.js'
+import {showBetBetScreen} from '../js/showOnScreen.js'
 
 //definition of objetcs
 class Player {
