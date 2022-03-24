@@ -114,6 +114,7 @@ const playAgain = () => { //WHEN PLAY AGAIN, MONEY RESTARTS TO 10000, SAVE ON LS
     clearTable();
     clearText();
     changeDisplayToBet();
+    window.location.reload();
 }
 const bet = (arrayPlayers, betValue) => {
     gBet += betValue;
@@ -260,6 +261,9 @@ const playerlose = () => {
     loseText.style.color = "#dc3545"
     loseText.style.fontWeight = "bold"
     loseText.style.fontSize = "36px"
+
+    arrayPlayers[0].money -= arrayPlayers[0].bet;
+    setMoney(arrayPlayers[0].money);
 }
 
 initialize();
